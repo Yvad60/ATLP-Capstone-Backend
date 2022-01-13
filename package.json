@@ -1,0 +1,23 @@
+{
+  "name": "atlp-capstone-backend",
+  "version": "1.0.0",
+  "description": "The backend version of the Capstone project  of the ATLP Program",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yvad60/ATLP-Capstone-Backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yvad60/ATLP-Capstone-Backend/issues"
+  },
+  "homepage": "https://github.com/Yvad60/ATLP-Capstone-Backend#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
