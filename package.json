@@ -4,7 +4,7 @@
   "description": "The backend version of the Capstone project  of the ATLP Program",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon db.js"
   },
   "repository": {
     "type": "git",
