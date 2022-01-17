@@ -30,7 +30,10 @@ app.delete('/blog/delete/:articleId', (req, res) => {
     })
 })
 
-app.patch
+
+app.put('/blog/update/:articleId', (req, res) => {
+  //findByIdAndUpdate()
+})
 
 
 //Create for the CRUD operation 
