@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "The backend version of the Capstone project  of the ATLP Program",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "nodemon db.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
