@@ -1,10 +1,9 @@
 //importing dependecies
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
+import dotenv from "dotenv"
+dotenv.config()
 
-//setting up the Mongo URL to connect to
-const username = 'Yvad60'
-const password = 'yvad6060'
-const MONGO_URL = `mongodb+srv://${username}:${password}@cluster0.kp6aj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+const MONGO_URL = process.env.MONGODB_URL
 
 // connecting to the MongoDB database 
 const connectMongo = () => {
@@ -21,4 +20,4 @@ const connectMongo = () => {
 }
 
 //export the connectMongo function
-module.exports = connectMongo
+export default connectMongo
