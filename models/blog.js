@@ -1,12 +1,12 @@
-
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
 
 const articleSchema = new Schema({
   title: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   author: {
     type: String,
@@ -19,5 +19,5 @@ const articleSchema = new Schema({
 }, { timestamps: true })
 
 const Article = mongoose.model('Article', articleSchema)
-module.exports = Article
 
+export default Article

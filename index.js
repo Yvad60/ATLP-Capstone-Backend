@@ -1,13 +1,16 @@
-const blog = require('./routes/blog')
+import dotenv from 'dotenv'
+dotenv.config()
+import express from 'express';
+import connectMongo from './dbConfing.js';
+import mainRouter from './routes/index.js';
 
-//impporting dependecies
-const express = require('express')
-const connectMongo = require('./dbConfing')
-const app = express()
 const PORT = process.env.PORT || 5000
+const app = express();
 
-app.use(blog)
-// starting the server on the port 
+app.use(express.json());
+app.use('/api/v1', mainRouter)
+
+
 app.listen(PORT, () => {
   connectMongo()
   console.log(`the server is running on port ${PORT}`)
