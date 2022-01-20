@@ -1,11 +1,9 @@
-//importing dependecies
 import mongoose from 'mongoose'
 import dotenv from "dotenv"
 dotenv.config()
 
 const MONGO_URL = process.env.MONGODB_URL
 
-// connecting to the MongoDB database 
 const connectMongo = () => {
   mongoose.connect(MONGO_URL, {
     useNewUrlParser: true,
@@ -18,6 +16,4 @@ const connectMongo = () => {
     process.exit();
   });
 }
-
-//export the connectMongo function
 export default connectMongo

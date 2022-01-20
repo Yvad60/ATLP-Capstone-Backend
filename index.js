@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 import express from 'express';
 import connectMongo from './dbConfing.js';
-import {mainRouter, homeRoute} from './routes/index.js';
+import { mainRouter, homeRoute } from './routes/index.js';
 
 const PORT = process.env.PORT || 5000
 const app = express();
