@@ -1,8 +1,12 @@
 import { Router } from "express";
 const mainRouter = Router();
 import blogRouter from "./blog.js";
+import usersRouter from "./users.js"
+
+
 
 mainRouter.use('/blogs', blogRouter);
+mainRouter.use('/users', usersRouter)
 const welcomeMessage =
   `
 <h1>Welcome to API</h1><br> <hr>

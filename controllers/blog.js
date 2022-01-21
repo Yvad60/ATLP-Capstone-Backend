@@ -1,12 +1,12 @@
 import articleModel from '../models/blog.js'
+import { validArticleSchema } from '../validation/validation.js'
 
 export const createNewArticle = async (req, res) => {
-  let { content, title, author } = req.body
-  if (!content || !title || !author) {
-    return res.status(400).json({
-      "message": "Missing required input"
-    });
+  const validationErrors = validArticleSchema.validate(req.body).error
+  if (validationErrors) {
+    return res.status(400).json({ "error": validationErrors.details[0].message })
   }
+  let { title, author, content } = req.body
   try {
     const articleExist = await articleModel.findOne({ title: title })
     if (articleExist) {
@@ -17,9 +17,10 @@ export const createNewArticle = async (req, res) => {
       content: content,
       title: title
     })
-    return res.status(200).json(newBlog)
+    if (newBlog != {}) {
+      return res.status(200).json(newBlog)
+    }
   } catch (error) {
-    if (!newBlog) return res.sendStatus(500)
     return res.send(error)
   }
 }
@@ -38,13 +39,12 @@ export const getAllArticles = async (req, res) => {
 }
 
 export const updateArticle = async (req, res) => {
-
   try {
-    const articleToUpdate = await articleModel.findOneAndUpdate(req.params.articleId, req.body);
+    const articleToUpdate = await articleModel.findOneAndUpdate(req.params.articleId, req.body, { returnNewDocument: true });
     if (!articleToUpdate) {
       res.status(404).json({ message: "Article not found" });
     } else {
-      res.status(200).json({ article: articleToUpdate, "message": "article updated" })
+      res.status(200).json(articleToUpdate)
     }
   } catch (error) {
     res.status(500).json({ message: error.message })
@@ -57,7 +57,7 @@ export const getSingleArticle = async (req, res) => {
   try {
     const articleExist = await articleModel.findById(id)
     if (articleExist) {
-      return res.status(200).json({ articleExist })
+      return res.status(200).json(articleExist)
     }
     else {
       return res.status(400).json({ "message": `article with id ${id} not found` })
