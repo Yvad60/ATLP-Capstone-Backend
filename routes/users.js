@@ -3,7 +3,7 @@ import { registerNewUser } from '../controllers/users.js'
 
 const usersRouter = Router()
 
-usersRouter.get('/register', registerNewUser)
+usersRouter.post('/', registerNewUser)
 
 
 
