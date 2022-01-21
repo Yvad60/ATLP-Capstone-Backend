@@ -42,7 +42,7 @@ export const updateArticle = async (req, res) => {
   try {
     const articleToUpdate = await articleModel.findOneAndUpdate(req.params.articleId, req.body, { returnNewDocument: true });
     if (!articleToUpdate) {
-      res.status(404).json({ message: "Article not found" });
+      return res.status(404).json({ message: "Article not found" });
     } else {
       res.status(200).json({ status: "OK", message: "article updated" })
     }
