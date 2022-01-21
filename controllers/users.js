@@ -20,7 +20,7 @@ export const registerNewUser = async (req, res) => {
       email: email,
       password: hashedPassword
     })
-    return res.status(200).json({ message: "user created sucsessfully", "name": newUser.name, "email": newUser.email })
+    return res.status(201).json({ message: "user created sucsessfully", "name": newUser.name, "email": newUser.email })
   } catch (error) {
     return res.status(500).json(error)
   }

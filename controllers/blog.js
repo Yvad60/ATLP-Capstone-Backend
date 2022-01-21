@@ -44,7 +44,7 @@ export const updateArticle = async (req, res) => {
     if (!articleToUpdate) {
       res.status(404).json({ message: "Article not found" });
     } else {
-      res.status(200).json(articleToUpdate)
+      res.status(200).json({ status: "OK", message: "article updated" })
     }
   } catch (error) {
     res.status(500).json({ message: error.message })
