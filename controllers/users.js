@@ -25,3 +25,14 @@ export const registerNewUser = async (req, res) => {
     return res.status(500).json(error)
   }
 }
+
+export const getAllUsers = async (req, res) => {
+  try {
+    const allUsers = await userModel.find({})
+    return res.status(200).json(allUsers)
+  } catch (error) {
+    res.status(500).send({
+      message: err.message || "Error occured while getting articles"
+    })
+  }
+}
