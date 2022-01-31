@@ -15,6 +15,10 @@ const articleSchema = new Schema({
   content: {
     type: String,
     required: true
+  },
+  thumbnail: {
+    data: Buffer,
+    contentType: String
   }
 }, { timestamps: true })
 
