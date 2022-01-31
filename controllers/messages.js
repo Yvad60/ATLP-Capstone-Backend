@@ -20,7 +20,7 @@ const getAllMessages = async (req, res) => {
   const messages = await messageModel.find()
   try {
     if (messages) {
-      return res.status(200).json(handleResponse('success', 200, messages))
+      return res.status(200).json(messages)
     }
     else {
       return res.status(404).json(handleResponse('fail', 404, { message: 'no messages found' }))
