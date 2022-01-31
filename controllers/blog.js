@@ -14,7 +14,7 @@ const createNewArticle = async (req, res) => {
     }
     const newBlog = await articleModel.create({
       author: author,
-      content: content,
+      content: content, 
       title: title
     })
     if (newBlog != {}) {

@@ -2,9 +2,10 @@ import { Router } from "express";
 const mainRouter = Router();
 import blogRouter from "./blog.js";
 import usersRouter from "./users.js"
+import messagesRouter from "./messages.js"
 
 
-
+mainRouter.use('/messages', messagesRouter)
 mainRouter.use('/blogs', blogRouter);
 mainRouter.use('/users', usersRouter)
 const welcomeMessage =
