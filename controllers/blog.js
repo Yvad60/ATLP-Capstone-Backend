@@ -1,5 +1,4 @@
 import articleModel from '../models/blog.js'
-import { validArticleSchema } from '../validation/validation.js'
 import { handleResponse } from './index.js'
 
 const createNewArticle = async (req, res) => {
@@ -35,16 +34,19 @@ const getAllArticles = async (req, res) => {
 
 const updateArticle = async (req, res) => {
   const id = req.params.articleId
-  console.log(id.length)
-
-  const articleToUpdate = await articleModel.findById(id)
-  if (!articleToUpdate || id.length != 24) {
-    return res.status(404).json(handleResponse("fail", 404, { message: "Article not found" }));
-
-  } else {
-    const validationErrors = validArticleSchema.validate(req.body, { allowUnknown: true }).error
-    const updatedArticle = await articleModel.findByIdAndUpdate(id, req.body, { new: true });
-    res.status(200).json(handleResponse("success", 200, updatedArticle))
+  try {
+    if (id.length != 24) {
+      return res.status(404).json(handleResponse("fail", 404, { message: "article not found" }));
+    }
+    const articleToUpdate = await articleModel.findById(id)
+    if (!articleToUpdate) {
+      return res.status(404).json(handleResponse("fail", 404, { message: "article not found" }));
+    } else {
+      const updatedArticle = await articleModel.findByIdAndUpdate(id, req.body, { new: true });
+      res.status(200).json(handleResponse("success", 200, updatedArticle))
+    }
+  } catch (error) {
+    res.status(500).json(handleResponse('fail', 500, { message: error.message || 'internal server error' }))
   }
 
 }

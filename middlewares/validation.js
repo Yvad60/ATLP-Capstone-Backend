@@ -10,4 +10,12 @@ const newArticleValidation = (req, res, next) => {
   return next()
 }
 
-export { newArticleValidation }
+const updateArticleValidation = (req, res, next) => {
+  const articleUpdates = req.body
+  const validationErrors = validArticleSchema.validate(articleUpdates, { allowUnknown: true }).error
+  if (validationErrors) {
+    return res.status(400).json(handleResponse('fail', 400, { "error": validationErrors.details[0].message }))
+  }
+  return next()
+}
+export { newArticleValidation, updateArticleValidation }

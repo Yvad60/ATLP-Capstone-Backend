@@ -40,6 +40,7 @@ describe('/POST /api/v1/blogs', () => {
   })
 })
 
+
 describe('/GET api/v1/blogs', () => {
   it('returns a list of all articles', (done) => {
     chai.request(app).get('/api/v1/blogs').end((error, res) => {
@@ -51,7 +52,37 @@ describe('/GET api/v1/blogs', () => {
   });
 })
 
+describe('/PUT /api/v1/blogs/:articleId', () => {
+  const articleId = '61f9456e4ee02db76374432f'
+  const articleUpdates = {
+    "author": "titi"
+  }
+  it("update the article by it's ID", (done) => {
+    chai.request(app).put(`/api/v1/blogs/${articleId}`).send(articleUpdates).end((error, res) => {
+      res.should.have.status(200)
+      res.body.should.be.a('object')
+      res.body.should.have.property('status').eq('success')
+      res.body.should.have.property('results').include(articleUpdates)
+    })
+    done();
+  })
+})
 
+describe('/PUT /api/v1/blogs/:wrongId', () => {
+  const wrongId = '61f9456e76374432f'
+  const articleUpdates = {
+    "author": "titi"
+  }
+  it("tries to update the article with a wrong id", (done) => {
+    chai.request(app).put(`/api/v1/blogs/${wrongId}`).send(articleUpdates).end((error, res) => {
+      res.should.have.status(404)
+      res.body.should.be.a('object')
+      res.body.should.have.property('status').eq('fail')
+      res.body.should.have.property('results').include({ message: "article not found" })
+    })
+    done();
+  })
+})
 
 
 
