@@ -23,14 +23,13 @@ const createNewArticle = async (req, res) => {
 const getAllArticles = async (req, res) => {
   try {
     const articles = await articleModel.find()
-    if (articles) {
-      return res.status(200).json(articles)
+    if (articles.length === 0) {
+      return res.status(200).json(handleResponse('success', 200, { message: "no articles in the database" }))
     }
+    return res.status(200).json(handleResponse('success', 200, articles))
   }
-  catch (err) {
-    res.status(500).send({
-      message: err.message
-    })
+  catch (error) {
+    res.status(500).json(handleResponse('fail', 500, { message: error.message || 'internal server error' }))
   }
 }
 
