@@ -1,39 +1,35 @@
 import articleModel from '../models/blog.js'
 import { validArticleSchema } from '../validation/validation.js'
+import { handleResponse } from './index.js'
 
 const createNewArticle = async (req, res) => {
-  const validationErrors = validArticleSchema.validate(req.body).error
-  if (validationErrors) {
-    return res.status(400).json(handleResponse("fail", 400, { "error": validationErrors.details[0].message }))
-  }
   let { title, author, content } = req.body
   try {
     const articleExist = await articleModel.findOne({ title: title })
     if (articleExist) {
-      return res.status(409).json(handleResponse("fail",409,{ message: "article title taken" }))
+      return res.status(409).json(handleResponse("fail", 409, { error: "article title is taken" }))
     }
-    const newBlog = await articleModel.create({
+    const newArticle = await articleModel.create({
+      title: title,
       author: author,
-      content: content, 
-      title: title
+      content: content,
     })
-    if (newBlog != {}) {
-      return res.status(200).json(newBlog)
-    }
+    return res.status(201).json(handleResponse('success', 201, newArticle))
   } catch (error) {
-    return res.send(error)
+    return res.status(500).json(handleResponse('fail', 500, { message: error.message }))
   }
 }
-
 
 const getAllArticles = async (req, res) => {
   try {
     const articles = await articleModel.find()
-    return res.status(200).json(articles)
+    if (articles) {
+      return res.status(200).json(articles)
+    }
   }
   catch (err) {
     res.status(500).send({
-      message: err.message || "Error occured while getting articles"
+      message: err.message
     })
   }
 }
@@ -91,13 +87,5 @@ const deleteArticle = async (req, res) => {
   }
 }
 
-const handleResponse = (statusMessage, code, data) => {
-  const response = {
-    status: statusMessage,
-    statusCode: code,
-    response: data
-  }
-  return response
-}
 
 export { createNewArticle, getAllArticles, updateArticle, getSingleArticle, deleteArticle }

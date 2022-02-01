@@ -36,9 +36,25 @@ const validArticleSchema = Joi.object({
   content: Joi.string().min(10).required().messages({
     "string.empty": "article contents can not be empty",
     "string.min": "aticle contents  must have at least 10 characters",
-    "any.required": "article contents is required"
+    "any.required": "article content is required"
   })
 })
 
-export { validUserSchema, validArticleSchema }
+const validLoginSchema = Joi.object({
+  password: Joi.
+    string().min(5).required().messages({
+      "string.empty": "password can not be empty",
+      "any.required": "password is required"
+    }),
+  email: Joi.
+    string().email().required().messages({
+      "string.empty": "email can not be empty",
+      "string.email": "email must be a valid email",
+      "any.required": "email is required"
+    })
+})
+
+
+
+export { validUserSchema, validArticleSchema, validLoginSchema }
 

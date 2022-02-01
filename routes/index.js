@@ -8,6 +8,11 @@ import messagesRouter from "./messages.js"
 mainRouter.use('/messages', messagesRouter)
 mainRouter.use('/blogs', blogRouter);
 mainRouter.use('/users', usersRouter)
+
+
+
+
+
 const welcomeMessage =
   `
 <h1>Welcome to API</h1><br> <hr>

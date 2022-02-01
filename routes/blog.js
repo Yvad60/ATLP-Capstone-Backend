@@ -1,7 +1,7 @@
 import { Router } from 'express'
-import {
-  getAllArticles, getSingleArticle, createNewArticle, deleteArticle, updateArticle
-} from '../controllers/blog.js'
+import { getAllArticles, getSingleArticle, createNewArticle, deleteArticle, updateArticle } from '../controllers/blog.js';
+import { newArticleValidation } from '../middlewares/validation.js';
+
 
 const blogRouter = Router();
 
@@ -10,7 +10,7 @@ blogRouter.get('/', getAllArticles)
 
 blogRouter.get('/:articleId', getSingleArticle)
 
-blogRouter.post('/', createNewArticle)
+blogRouter.post('/', newArticleValidation, createNewArticle)
 
 blogRouter.delete('/:articleId', deleteArticle)
 

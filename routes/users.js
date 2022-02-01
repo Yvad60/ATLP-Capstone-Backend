@@ -1,8 +1,12 @@
 import { Router } from 'express'
-import { registerNewUser, getAllUsers } from '../controllers/users.js'
+import { registerNewUser, getAllUsers, loginUser, } from '../controllers/users.js';
 
 const usersRouter = Router()
 
-usersRouter.post('/', registerNewUser)
 usersRouter.get('/', getAllUsers)
+
+usersRouter.post('/', registerNewUser)
+usersRouter.post('/login', (req, res, next) => {
+  validLoginSchema.validate(req.body), loginUser
+})
 export default usersRouter

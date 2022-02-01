@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt'
 import userModel from '../models/users.js'
-import { validUserSchema } from '../validation/validation.js'
+import { validUserSchema, validLoginSchema } from '../validation/validation.js';
 
-export const registerNewUser = async (req, res) => {
+const registerNewUser = async (req, res) => {
   const validationErrors = validUserSchema.validate(req.body).error
   if (validationErrors) {
     return res.status(400).json({ "error": validationErrors.details[0].message })
@@ -26,7 +26,25 @@ export const registerNewUser = async (req, res) => {
   }
 }
 
-export const getAllUsers = async (req, res) => {
+const loginUser = async (req, res) => {
+  let { email, password } = req.body
+  try {
+    const userExist = await userModel.findOne({ email: email })
+    if (!userExist) {
+      return res.status(404).json({ "error": "invalid credentials" })
+    }
+    const passwordMatches = bcrypt.compare(password, userExist.password)
+    if (!passwordMatches) {
+      return res.status(404).json({ "error": "invalid credentials" })
+    }
+    return res.status(200).json({ "message": "logged in" })
+  } catch (error) {
+    return res.status(500).json({ "error": "error occured" })
+  }
+}
+
+
+const getAllUsers = async (req, res) => {
   try {
     const allUsers = await userModel.find({})
     return res.status(200).json(allUsers)
@@ -36,3 +54,5 @@ export const getAllUsers = async (req, res) => {
     })
   }
 }
+
+export { registerNewUser, getAllUsers, loginUser }

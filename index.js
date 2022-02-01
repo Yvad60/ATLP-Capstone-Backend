@@ -17,3 +17,5 @@ app.listen(PORT, () => {
   connectMongo()
   console.log(`the server is running on port ${PORT}`)
 })
+
+export { app }
