@@ -40,6 +40,25 @@ const validArticleSchema = Joi.object({
   })
 })
 
+const validUpdateArticleSchema = Joi.object({
+  title: Joi.string().min(5).required().optional().messages({
+    "string.empty": "article title can not be empty",
+    "string.min": "aticle title  must have at least 8 characters",
+    "any.required": "article title is required"
+  }),
+  author: Joi.string().min(2).required().optional().messages({
+    "string.empty": "article author can not be empty",
+    "string.min": "aticle author  must have at least 2 characters",
+    "any.required": "article author is required"
+  }),
+  content: Joi.string().min(10).required().optional().messages({
+    "string.empty": "article contents can not be empty",
+    "string.min": "aticle contents  must have at least 10 characters",
+    "any.required": "article content is required"
+  })
+})
+
+
 const validLoginSchema = Joi.object({
   password: Joi.
     string().min(5).required().messages({
@@ -53,8 +72,5 @@ const validLoginSchema = Joi.object({
       "any.required": "email is required"
     })
 })
-
-
-
-export { validUserSchema, validArticleSchema, validLoginSchema }
+export { validUserSchema, validArticleSchema, validLoginSchema, validUpdateArticleSchema }
 

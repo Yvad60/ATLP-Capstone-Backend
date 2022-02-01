@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { getAllArticles, getSingleArticle, createNewArticle, deleteArticle, updateArticle } from '../controllers/blog.js';
-import { newArticleValidation } from '../middlewares/validation.js';
+import { newArticleValidation, updateArticleValidation } from '../middlewares/validation.js';
 
 
 const blogRouter = Router();
@@ -14,6 +14,6 @@ blogRouter.post('/', newArticleValidation, createNewArticle)
 
 blogRouter.delete('/:articleId', deleteArticle)
 
-blogRouter.put('/:articleId', updateArticle);
+blogRouter.put('/:articleId', updateArticleValidation, updateArticle);
 
 export default blogRouter;
