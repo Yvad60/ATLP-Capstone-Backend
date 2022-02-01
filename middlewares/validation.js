@@ -1,6 +1,5 @@
 import { handleResponse } from "../controllers/index.js"
-import { validArticleSchema, validUpdateArticleSchema } from "../validation/validation.js"
-import { validUserSchema } from "../validation/validation.js"
+import { validArticleSchema, validUpdateArticleSchema, validNewUserSchema } from "../validation/validation.js"
 
 const newArticleValidation = (req, res, next) => {
   const newArticleInputs = req.body
@@ -21,6 +20,16 @@ const updateArticleValidation = (req, res, next) => {
   }
   return next()
 }
-export { newArticleValidation, updateArticleValidation }
+
+const newUserValidation = (req, res, next) => {
+  const validationErrors = validNewUserSchema.validate(req.body).error
+  if (validationErrors) {
+    return res.status(400).json(handleResponse('fail', 400, { "error": validationErrors.details[0].message }))
+  }
+  return next()
+}
+
+
+export { newArticleValidation, updateArticleValidation, newUserValidation }
 
 

@@ -1,11 +1,15 @@
 import { Router } from 'express'
-import { registerNewUser, getAllUsers, loginUser, } from '../controllers/users.js';
+import { registerNewUser, getAllUsers, getSingleUser, loginUser, deleteUser, } from '../controllers/users.js';
+import { newUserValidation } from '../middlewares/validation.js';
 
 const usersRouter = Router()
 
 usersRouter.get('/', getAllUsers)
-usersRouter.post('/', registerNewUser)
-usersRouter.post('/login', (req, res, next) => {
-  validLoginSchema.validate(req.body), loginUser
-})
+usersRouter.get('/:userId', getSingleUser)
+usersRouter.delete('/:userId', deleteUser)
+usersRouter.post('/', newUserValidation, registerNewUser)
+
+// usersRouter.post('/login', (req, res, next) => {
+//   validLoginSchema.validate(req.body), loginUser
+// })
 export default usersRouter

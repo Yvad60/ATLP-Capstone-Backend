@@ -15,7 +15,7 @@ const createNewArticle = async (req, res) => {
     })
     return res.status(201).json(handleResponse('success', 201, newArticle))
   } catch (error) {
-    return res.status(500).json(handleResponse('fail', 500, { message: error.message }))
+    return res.status(500).json(handleResponse('fail', 500, { message: error.message || 'internal server error' }))
   }
 }
 
@@ -56,9 +56,9 @@ const getSingleArticle = async (req, res) => {
     }
     const articleExist = await articleModel.findById(id)
     if (!articleExist) {
-      return res.status(404).json(handleResponse('fail', 404, { message: 'article with not found' }))
+      return res.status(404).json(handleResponse('fail', 404, { message: 'article not found' }))
     }
-    return res.status(200).json(handleResponse('fail', 200, articleExist))
+    return res.status(200).json(handleResponse('success', 200, articleExist))
   } catch (error) {
     res.status(500).json(handleResponse('fail', 500, { message: error.message || 'internal server error' }))
   }
