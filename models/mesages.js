@@ -6,7 +6,7 @@ const messageSchema = new Schema({
   names: {
     type: String,
     required: true,
-    minLength: [5, 'name shoulbe be 5 characters or more']
+    minLength: 5
   },
   email: {
     type: String,

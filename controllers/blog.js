@@ -1,103 +1,83 @@
 import articleModel from '../models/blog.js'
-import { validArticleSchema } from '../validation/validation.js'
+import { handleResponse } from './index.js'
 
 const createNewArticle = async (req, res) => {
-  const validationErrors = validArticleSchema.validate(req.body).error
-  if (validationErrors) {
-    return res.status(400).json(handleResponse("fail", 400, { "error": validationErrors.details[0].message }))
-  }
   let { title, author, content } = req.body
   try {
     const articleExist = await articleModel.findOne({ title: title })
     if (articleExist) {
-      return res.status(409).json(handleResponse("fail",409,{ message: "article title taken" }))
+      return res.status(409).json(handleResponse("fail", 409, { error: "article title is taken" }))
     }
-    const newBlog = await articleModel.create({
+    const newArticle = await articleModel.create({
+      title: title,
       author: author,
-      content: content, 
-      title: title
+      content: content,
     })
-    if (newBlog != {}) {
-      return res.status(200).json(newBlog)
-    }
+    return res.status(201).json(handleResponse('success', 201, newArticle))
   } catch (error) {
-    return res.send(error)
+    return res.status(500).json(handleResponse('fail', 500, { message: error.message || 'internal server error' }))
   }
 }
-
 
 const getAllArticles = async (req, res) => {
   try {
     const articles = await articleModel.find()
-    return res.status(200).json(articles)
-  }
-  catch (err) {
-    res.status(500).send({
-      message: err.message || "Error occured while getting articles"
-    })
+    if (articles.length === 0) {
+      return res.status(200).json(handleResponse('success', 200, { message: "no articles in the database" }))
+    }
+    return res.status(200).json(handleResponse('success', 200, articles))
+  } catch (error) {
+    res.status(500).json(handleResponse('fail', 500, { message: error.message || 'internal server error' }))
   }
 }
 
 const updateArticle = async (req, res) => {
   const id = req.params.articleId
-  console.log(id.length)
-
-  const articleToUpdate = await articleModel.findById(id)
-  if (!articleToUpdate || id.length != 24) {
-    return res.status(404).json(handleResponse("fail", 404, { message: "Article not found" }));
-
-  } else {
-    const validationErrors = validArticleSchema.validate(req.body, { allowUnknown: true }).error
+  try {
+    if (id.length != 24) {
+      return res.status(404).json(handleResponse("fail", 404, { message: "article not found" }));
+    }
+    const articleToUpdate = await articleModel.findById(id)
+    if (!articleToUpdate) {
+      return res.status(404).json(handleResponse("fail", 404, { message: "article not found" }));
+    }
     const updatedArticle = await articleModel.findByIdAndUpdate(id, req.body, { new: true });
     res.status(200).json(handleResponse("success", 200, updatedArticle))
+  } catch (error) {
+    res.status(500).json(handleResponse('fail', 500, { message: error.message || 'internal server error' }))
   }
-
 }
-
 
 const getSingleArticle = async (req, res) => {
   const id = req.params.articleId
   try {
+    if (id.length != 24) {
+      return res.status(404).json(handleResponse("fail", 404, { message: "article not found" }));
+    }
     const articleExist = await articleModel.findById(id)
-    if (articleExist) {
-      return res.status(200).json(articleExist)
+    if (!articleExist) {
+      return res.status(404).json(handleResponse('fail', 404, { message: 'article not found' }))
     }
-    else {
-      return res.status(400).json({ "message": `article with id ${id} not found` })
-    }
+    return res.status(200).json(handleResponse('success', 200, articleExist))
   } catch (error) {
-    res.status(500).json({ "message": error.message })
+    res.status(500).json(handleResponse('fail', 500, { message: error.message || 'internal server error' }))
   }
 }
 
 const deleteArticle = async (req, res) => {
   let id = req.params.articleId
   try {
+    if (id.length != 24) {
+      return res.status(404).json(handleResponse('fail', 404, { message: "article not found" }));
+    }
     const articleFound = await articleModel.findByIdAndDelete(id)
-    if (articleFound) {
-      res.status(200).json({
-        message: `article with id ${id} deleted`
-      })
+    if (!articleFound) {
+      return res.status(404).json(handleResponse('fail', 404, { message: "article not found" }))
     }
-    else {
-      res.status(400).json({
-        message: `article with id ${id} not found`
-      })
-    }
-  } catch (error) {
-    res.status(500).json({
-      "message": error.message
-    })
+    return res.status(200).json(handleResponse('success', 200, { message: "article deleted" }))
+  }
+  catch (error) {
+    return res.status(500).json(handleResponse('fail', 500, { message: error.message || 'internal server error' }))
   }
 }
-
-const handleResponse = (statusMessage, code, data) => {
-  const response = {
-    status: statusMessage,
-    statusCode: code,
-    response: data
-  }
-  return response
-}
-
 export { createNewArticle, getAllArticles, updateArticle, getSingleArticle, deleteArticle }

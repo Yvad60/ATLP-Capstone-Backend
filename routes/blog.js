@@ -1,19 +1,18 @@
 import { Router } from 'express'
-import {
-  getAllArticles, getSingleArticle, createNewArticle, deleteArticle, updateArticle
-} from '../controllers/blog.js'
+import { getAllArticles, getSingleArticle, createNewArticle, deleteArticle, updateArticle } from '../controllers/blog.js';
+import { authenticateAdminUser } from '../middlewares/authentication.js';
+import { newArticleValidation, updateArticleValidation } from '../middlewares/validation.js';
+
 
 const blogRouter = Router();
-
-
 blogRouter.get('/', getAllArticles)
 
 blogRouter.get('/:articleId', getSingleArticle)
 
-blogRouter.post('/', createNewArticle)
+blogRouter.post('/', authenticateAdminUser, newArticleValidation, createNewArticle)
 
-blogRouter.delete('/:articleId', deleteArticle)
+blogRouter.delete('/:articleId', authenticateAdminUser, deleteArticle)
 
-blogRouter.put('/:articleId', updateArticle);
+blogRouter.put('/:articleId', authenticateAdminUser, updateArticleValidation, updateArticle);
 
 export default blogRouter;
