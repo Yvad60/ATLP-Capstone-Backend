@@ -12,10 +12,8 @@ app.use(express.json());
 app.use('/api/v1', mainRouter)
 app.get("/", homeRoute)
 
-
 app.listen(PORT, () => {
   connectMongo()
   console.log(`the server is running on port ${PORT}`)
 })
-
 export { app }

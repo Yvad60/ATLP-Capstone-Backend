@@ -9,7 +9,6 @@ const authenticateAdminUser = async (req, res, next) => {
   try {
     const isTokenValid = jsonwebtoken.verify(adminToken, process.env.ADMIN_TOKEN_SECRET)
     req.adminUserId = isTokenValid
-    // console.log(req.adminUserId)
     return next()
   } catch (error) {
     return res.status(500).json(handleResponse('fail', 500, { error: error.message }))
