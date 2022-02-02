@@ -58,7 +58,6 @@ describe('/DELETE /api/v1/blogs/:articleId', () => {
   })
 })
 
-
 describe('/DELETE /api/v1/users/:userId', () => {
   const userId = '61f94344bcc7ebe02ba'
   it("tries to deletes a user WITHOUT an admin token", (done) => {
@@ -74,22 +73,23 @@ describe('/DELETE /api/v1/users/:userId', () => {
   })
 })
 
-// describe('/POST /articles', () => {
-//   const newArticle = {
-//     "title": "new article for testinga",
-//     "author": "Simon",
-//     "content": "testing article Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco."
-//   }
-//   it('it creates a new article on the blog  (with admin token)', (done) => {
-//     chai.request(app).post('/api/v1/blogs').set("admin-login-token", adminToken1).send(newArticle).end((error, res) => {
-//       res.should.have.status(201)
-//       res.body.should.be.a('object')
-//       res.body.should.have.property('status').eq('success')
-//       res.body.should.have.property('results').include(newArticle)
-//     })
-//     done()
-//   })
-// })
+describe('/POST /articles', () => {
+  const newArticle = {
+    "title": "new article for testing3",
+    "author": "Simon",
+    "content": "testing article Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco."
+  }
+  it('it creates a new article on the blog  (with admin token)', (done) => {
+    chai.request(app).post('/api/v1/blogs').set("admin-login-token", adminToken1).send(newArticle).end((error, res) => {
+      res.should.have.status(201)
+      res.body.should.be.a('object')
+      res.body.should.have.property('status').eq('success')
+      res.body.should.have.property('results').include(newArticle)
+    })
+    done()
+  })
+})
+
 describe('/POST /api/v1/articles', () => {
   const newArticle = {
     "strangefield": "virus code",
@@ -283,8 +283,6 @@ describe('/PUT /api/v1/blogs/:wrongId', () => {
   })
 })
 
-
-
 describe('/DELETE /api/v1/blogs/:articleId', () => {
   const articleId = '61f94344bcc7ebe02b5bfe1a'
   it("deletes an article by it's ID", (done) => {
@@ -298,7 +296,6 @@ describe('/DELETE /api/v1/blogs/:articleId', () => {
   })
 })
 
-
 describe('/DELETE /api/v1/blogs/:articleId', () => {
   const wrongId = '61f94344bcc7ebe02ba'
   it("tries to deletes an article by wrong ID", (done) => {
@@ -311,7 +308,6 @@ describe('/DELETE /api/v1/blogs/:articleId', () => {
     done();
   })
 })
-
 
 describe('/GET /api/v1/blogs/:userId', () => {
   const userId = '61f9bbd7968a55f5a9c20b9f'
