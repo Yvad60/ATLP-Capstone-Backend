@@ -89,19 +89,16 @@ const loginUser = async (req, res) => {
     if (userExist.role === 'admin') {
       const adminLoginToken = jsonwebtoken.sign({ id: userExist._id }, process.env.ADMIN_TOKEN_SECRET)
       res.header('admin-login-token', adminLoginToken)
-      return res.status(200).json(handleResponse('success', 200, { token: adminLoginToken }))
+      return res.status(200).json(handleResponse('success', 200, { user: userExist, token: adminLoginToken, userRole: "admin" }))
     }
     else if (userExist.role === 'user') {
       const normalUserToken = jsonwebtoken.sign({ id: userExist._id }, process.env.USERS_TOKEN_SECRET)
-      res.header('admin-login-token', normalUserToken)
-      return res.status(200).json(handleResponse('success', 200, { token: normalUserToken }))
+      res.header('normal-user-login', normalUserToken)
+      return res.status(200).json(handleResponse('success', 200, { user: userExist, token: normalUserToken, userRole: "user" }))
     }
   } catch (error) {
     return res.status(500).json(handleResponse('fail', 500, { error: error.message }))
   }
 }
-
-
-
 
 export { registerNewUser, getAllUsers, getSingleUser, deleteUser, loginUser }
