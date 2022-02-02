@@ -12,7 +12,7 @@ const registerNewUser = async (req, res) => {
   try {
     const userExist = await userModel.findOne({ email: email })
     if (userExist) {
-      return res.status(409).json(handleResponse('fail', 409, { "error": "the email is already in use" }))
+      return res.status(409).json(handleResponse('fail', 409, { message: "the email is already in use" }))
     }
     const salt = await bcrypt.genSalt(9)
     const hashedPassword = await bcrypt.hash(password, salt)
@@ -23,7 +23,7 @@ const registerNewUser = async (req, res) => {
     })
     return res.status(201).json(handleResponse('success', 201, { "name": newUser.name, "email": newUser.email }))
   } catch (error) {
-    return res.status(500).json(handleResponse('fail', 500, { error: error.message || "internal server error" }))
+    return res.status(500).json(handleResponse('fail', 500, { message: error.message || "internal server error" }))
   }
 }
 
@@ -80,11 +80,11 @@ const loginUser = async (req, res) => {
   try {
     const userExist = await userModel.findOne({ email: email })
     if (!userExist) {
-      return res.status(401).json(handleResponse('fail', 401, { "error": "invalid credentials" }))
+      return res.status(401).json(handleResponse('fail', 401, { message: "invalid credentials" }))
     }
     const passwordMatches = await bcrypt.compare(password, userExist.password)
     if (!passwordMatches) {
-      return res.status(401).json(handleResponse('fail', 401, { "error": "invalid credentials" }))
+      return res.status(401).json(handleResponse('fail', 401, { message: "invalid credentials" }))
     }
     if (userExist.role === 'admin') {
       const adminLoginToken = jsonwebtoken.sign({ id: userExist._id }, process.env.ADMIN_TOKEN_SECRET)
@@ -97,7 +97,7 @@ const loginUser = async (req, res) => {
       return res.status(200).json(handleResponse('success', 200, { user: userExist, token: normalUserToken, userRole: "user" }))
     }
   } catch (error) {
-    return res.status(500).json(handleResponse('fail', 500, { error: error.message }))
+    return res.status(500).json(handleResponse('fail', 500, { message: error.message }))
   }
 }
 

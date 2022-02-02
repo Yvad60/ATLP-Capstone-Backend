@@ -5,18 +5,18 @@ const newArticleValidation = (req, res, next) => {
   const newArticleInputs = req.body
   const validationErrors = validArticleSchema.validate(newArticleInputs).error
   if (validationErrors) {
-    return res.status(400).json(handleResponse("fail", 400, { "error": validationErrors.details[0].message }))
+    return res.status(400).json(handleResponse("fail", 400, { message: validationErrors.details[0].message }))
   }
   return next()
 }
 const updateArticleValidation = (req, res, next) => {
   const articleUpdates = req.body
   if (Object.keys(articleUpdates).length === 0) {
-    return res.status(400).json(handleResponse('fail', 400, { "error": "must update either title,author or content" }))
+    return res.status(400).json(handleResponse('fail', 400, { message: "must update either title,author or content" }))
   }
   const validationErrors = validUpdateArticleSchema.validate(articleUpdates).error
   if (validationErrors) {
-    return res.status(400).json(handleResponse('fail', 400, { "error": validationErrors.details[0].message }))
+    return res.status(400).json(handleResponse('fail', 400, { message: validationErrors.details[0].message }))
   }
   return next()
 }
@@ -24,7 +24,7 @@ const updateArticleValidation = (req, res, next) => {
 const newUserValidation = (req, res, next) => {
   const validationErrors = validNewUserSchema.validate(req.body).error
   if (validationErrors) {
-    return res.status(400).json(handleResponse('fail', 400, { "error": validationErrors.details[0].message }))
+    return res.status(400).json(handleResponse('fail', 400, { message: validationErrors.details[0].message }))
   }
   return next()
 }
@@ -32,7 +32,7 @@ const newUserValidation = (req, res, next) => {
 const loginValidation = (req, res, next) => {
   const validationErrors = validLoginSchema.validate(req.body).error
   if (validationErrors) {
-    return res.status(400).json(handleResponse('fail', 400, { "error": validationErrors.details[0].message }))
+    return res.status(400).json(handleResponse('fail', 400, { message: validationErrors.details[0].message }))
   }
   return next()
 }

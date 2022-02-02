@@ -6,7 +6,7 @@ const createNewArticle = async (req, res) => {
   try {
     const articleExist = await articleModel.findOne({ title: title })
     if (articleExist) {
-      return res.status(409).json(handleResponse("fail", 409, { error: "article title is taken" }))
+      return res.status(409).json(handleResponse("fail", 409, { message: "article title is taken" }))
     }
     const newArticle = await articleModel.create({
       title: title,
