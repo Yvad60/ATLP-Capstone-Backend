@@ -80,11 +80,11 @@ const loginUser = async (req, res) => {
   try {
     const userExist = await userModel.findOne({ email: email })
     if (!userExist) {
-      return res.status(404).json(handleResponse('fail', 404, { "error": "invalid credentials" }))
+      return res.status(401).json(handleResponse('fail', 401, { "error": "invalid credentials" }))
     }
     const passwordMatches = await bcrypt.compare(password, userExist.password)
     if (!passwordMatches) {
-      return res.status(404).json(handleResponse('fail', 404, { "error": "invalid credentials" }))
+      return res.status(401).json(handleResponse('fail', 401, { "error": "invalid credentials" }))
     }
     if (userExist.role === 'admin') {
       const adminLoginToken = jsonwebtoken.sign({ id: userExist._id }, process.env.ADMIN_TOKEN_SECRET)
