@@ -1,4 +1,5 @@
 import { messageModel } from "../models/mesages.js";
+import { handleResponse } from "./index.js";
 
 const createNewMessage = async (req, res) => {
   let { names, email, message } = req.body
@@ -20,7 +21,7 @@ const getAllMessages = async (req, res) => {
   const messages = await messageModel.find()
   try {
     if (messages) {
-      return res.status(200).json(messages)
+      return res.status(200).json(handleResponse('success', 200, messages))
     }
     else {
       return res.status(404).json(handleResponse('fail', 404, { message: 'no messages found' }))
@@ -30,14 +31,4 @@ const getAllMessages = async (req, res) => {
   }
 
 }
-
-const handleResponse = (statusMessage, code, data) => {
-  const response = {
-    status: statusMessage,
-    statusCode: code,
-    response: data
-  }
-  return response
-}
-
 export { createNewMessage, getAllMessages }
