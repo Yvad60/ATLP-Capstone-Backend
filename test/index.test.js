@@ -4,22 +4,22 @@ import { app } from '../index.js'
 chai.should()
 chai.use(chaiHttp)
 
-// describe('/POST /articles', () => {
-//   const newArticle = {
-//     "title": "new article for testing 9",
-//     "author": "Simon",
-//     "content": "testing article Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco."
-//   }
-//   it('it creates a new article on the blog database', (done) => {
-//     chai.request(app).post('/api/v1/blogs').send(newArticle).end((error, res) => {
-//       res.should.have.status(201)
-//       res.body.should.be.a('object')
-//       res.body.should.have.property('status').eq('success')
-//       res.body.should.have.property('results').include(newArticle)
-//     })
-//     done()
-//   })
-// })
+describe('/POST /articles', () => {
+  const newArticle = {
+    "title": "new article for testing 9",
+    "author": "Simon",
+    "content": "testing article Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco."
+  }
+  it('it creates a new article on the blog database', (done) => {
+    chai.request(app).post('/api/v1/blogs').send(newArticle).end((error, res) => {
+      res.should.have.status(201)
+      res.body.should.be.a('object')
+      res.body.should.have.property('status').eq('success')
+      res.body.should.have.property('results').include(newArticle)
+    })
+    done()
+  })
+})
 
 describe('/POST /articles', () => {
   const newArticle = {

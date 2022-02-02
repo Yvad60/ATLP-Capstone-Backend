@@ -49,31 +49,34 @@ const validNewUserSchema = Joi.object({
       "string.min": "name must have at least {{#limit}} characters",
       "any.required": "name is required"
     }),
+  email: Joi.
+    string().email().required().messages({
+      "string.empty": "email can not be empty",
+      "string.email": "email must be a valid email",
+      "any.required": "email is required"
+    }),
   password: Joi.
     string().min(8).required().messages({
       "string.empty": "password can not be empty",
       "string.min": "password must have at least 8 characters",
       "any.required": "password is required"
-    }),
-  email: Joi.
-    string().email().required().messages({
-      "string.empty": "email can not be empty",
-      "string.email": "email must be a valid email",
-      "any.required": "email is required"
     })
 })
 
+
+
 const validLoginSchema = Joi.object({
-  password: Joi.
-    string().min(5).required().messages({
-      "string.empty": "password can not be empty",
-      "any.required": "password is required"
-    }),
   email: Joi.
     string().email().required().messages({
       "string.empty": "email can not be empty",
       "string.email": "email must be a valid email",
       "any.required": "email is required"
+    }),
+  password: Joi.
+    string().min(8).required().messages({
+      "string.empty": "password can not be empty",
+      "string.min": "password must have at least 8 characters",
+      "any.required": "password is required"
     })
 })
 export { validNewUserSchema, validArticleSchema, validLoginSchema, validUpdateArticleSchema }

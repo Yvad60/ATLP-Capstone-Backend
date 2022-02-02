@@ -10,15 +10,12 @@ mainRouter.use('/blogs', blogRouter);
 mainRouter.use('/users', usersRouter)
 
 
-
-
-
 const welcomeMessage =
   `
 <h1>Welcome to API</h1><br> <hr>
 <p>Go to the documentation <a href='#'>Here</a>
 `
-export const homeRoute = async (req, res) => {
+export const homeRoute = (req, res) => {
   return res.status(200).send(welcomeMessage)
 }
 export { mainRouter };

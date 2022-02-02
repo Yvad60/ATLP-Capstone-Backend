@@ -1,9 +1,14 @@
+import dotenv from "dotenv"
+dotenv.config()
 import bcrypt from 'bcrypt'
 import userModel from '../models/users.js'
 import { handleResponse } from './index.js';
+import jsonwebtoken from 'jsonwebtoken';
+
 
 const registerNewUser = async (req, res) => {
-  let { name, email, password } = req.body
+  const email = req.body.email.toLowerCase()
+  let { name, password } = req.body
   try {
     const userExist = await userModel.findOne({ email: email })
     if (userExist) {
@@ -70,19 +75,29 @@ const deleteUser = async (req, res) => {
 }
 
 const loginUser = async (req, res) => {
-  let { email, password } = req.body
+  const email = req.body.email.toLowerCase()
+  const password = req.body.password
   try {
     const userExist = await userModel.findOne({ email: email })
     if (!userExist) {
-      return res.status(404).json({ "error": "invalid credentials" })
+      return res.status(404).json(handleResponse('fail', 404, { "error": "invalid credentials" }))
     }
-    const passwordMatches = bcrypt.compare(password, userExist.password)
+    const passwordMatches = await bcrypt.compare(password, userExist.password)
     if (!passwordMatches) {
-      return res.status(404).json({ "error": "invalid credentials" })
+      return res.status(404).json(handleResponse('fail', 404, { "error": "invalid credentials" }))
     }
-    return res.status(200).json({ "message": "logged in" })
+    if (userExist.role === 'admin') {
+      const adminLoginToken = jsonwebtoken.sign({ id: userExist._id }, process.env.ADMIN_TOKEN_SECRET)
+      res.header('admin-login-token', adminLoginToken)
+      return res.status(200).json(handleResponse('success', 200, { token: adminLoginToken }))
+    }
+    else if (userExist.role === 'user') {
+      const normalUserToken = jsonwebtoken.sign({ id: userExist._id }, process.env.USERS_TOKEN_SECRET)
+      res.header('admin-login-token', normalUserToken)
+      return res.status(200).json(handleResponse('success', 200, { token: normalUserToken }))
+    }
   } catch (error) {
-    return res.status(500).json({ "error": "error occured" })
+    return res.status(500).json(handleResponse('fail', 500, { error: error.message }))
   }
 }
 
